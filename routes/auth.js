@@ -21,6 +21,18 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'All registration fields are required.' });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Please enter a valid email address.' });
+    }
+
+    // Validate phone number format (10 digits)
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ error: 'Phone Number must be a valid 10-digit number.' });
+    }
+
     // Check unique email
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
     if (existingEmail) {
