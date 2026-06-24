@@ -4,9 +4,15 @@ let io;
 const activeStudents = new Map(); // studentId -> { socketId, fullName, rollNumber, examId, lastActive, violationsCount, score, totalQuestions, status }
 
 export function initSocket(server) {
+  const allowedOrigins = [
+    'https://codexa-exam-portal.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:5174'
+  ];
+
   io = new Server(server, {
     cors: {
-      origin: '*', // Allow all for local development, adjust for production
+      origin: allowedOrigins,
       methods: ['GET', 'POST']
     }
   });

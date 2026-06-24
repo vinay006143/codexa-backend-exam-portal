@@ -16,8 +16,20 @@ const app = express();
 const server = http.createServer(app);
 
 // Middlewares
+const allowedOrigins = [
+  'https://codexa-exam-portal.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174'
+];
+
 app.use(cors({
-  origin: '*', // Allow requests from any origin for ease of development
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
